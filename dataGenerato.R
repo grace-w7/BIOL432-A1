@@ -10,8 +10,8 @@ observer_names <- c("McTaggart", "Zeno", "Socrates")
 observer <- sample(observer_names, 100, replace = TRUE)
 
 library(tibble)
-dat <- tibble("Species" = species_vec, "Limb Width (mm)" = limb_width, 
-              "Limb Length (mm)" = limb_length, "Observer" = observer)
+dat <- tibble("Species" = species_vec, "Limb_Width_mm" = limb_width, 
+              "Limb_Length_mm" = limb_length, "Observer" = observer)
 head(dat)
 tail(dat)
 
