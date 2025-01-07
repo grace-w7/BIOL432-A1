@@ -4,7 +4,8 @@
 species_names <- c("A. gestroi", "A. klugii", "P. laevis", "T. biocellata", "P. scaber")
 species_vec <- sample(species_names, 100, replace = TRUE)
 
-#Limb width and length vectors (randomly assigned values)
+#Limb width and length vectors 
+#randomly assigned absolute values, mean and sd assigned to keep values in desired range
 limb_width <- abs(rnorm(100, mean = 4, sd = 1))
 limb_length <- abs(rnorm(100, mean = 9, sd = 2))
 
