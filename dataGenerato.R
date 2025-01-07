@@ -12,7 +12,7 @@ limb_length <- abs(rnorm(100, mean = 9, sd = 2))
 observer_names <- c("McTaggart", "Zeno", "Socrates") 
 observer <- sample(observer_names, 100, replace = TRUE)
 
-#Combining all of the aformentioned vectors into one dataframe w/ tibble
+#Combining all of the aforementioned vectors into one dataframe w/ tibble
 library(tibble)
 dat <- tibble("Species" = species_vec, "Limb_Width_mm" = limb_width, 
               "Limb_Length_mm" = limb_length, "Observer" = observer)
