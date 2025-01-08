@@ -1,0 +1,156 @@
+---
+title: "BIOL 432 - A1"
+author: "G"
+date: "2025-01-07"
+output: html_document
+---
+[github repository](https://github.com/grace-w7/BIOL432-A1/blob/main/dataGenerato.R)
+
+
+**dataGenerato.R**: Generates a data frame containing randomly selected species names (5 species), limb measurements (either width and length), and randomly assigns observers (3 observers) to a species, limb length and width. This data was then compiled into a csv file. This script generates 100 data entries in total. The script below loads in the dataGenerato.R data
+
+
+```{r}
+source('dataGenerato.R')
+```
+
+
+**volumeEstimato.R**: Takes the previously generated csv file and estimates the volume of a limb based on the respective limb width and length values. A new column titled "Volume_mm3" was added to the data frame and the csv file was updated to contain any newly calculated values. The script below loads in the volumeEstimato.R data
+
+
+```{r}
+source('volumeEstimato.R')
+```
+
+
+**Load the revised measurements**
+
+
+Below, the updated dataset is loaded in and checked for any errors using the head() function.
+
+
+```{r}
+dat <- read.csv("measurements.csv")
+```
+
+
+```{r}
+head(dat)
+```
+
+
+**Data Sorted by Species, Observer, and Volume**
+
+
+Data is now sorted by species, observer, and limb volume. The new data set is then checked to ensure no errors occured.
+
+
+```{r}
+dat_sort <- dat %>%
+  arrange(Species, Observer, Volume_mm3)
+```
+
+
+```{r}
+head(dat_sort)
+```
+
+
+**Average Limb Volume by Species**
+
+
+Using the grouped data, the average limb volume per species is calculated and  displayed in a table.
+
+
+```{r}
+avg_spec_volume <- dat_sort %>%
+  group_by(Species) %>%
+  summarise(Average_Volume = mean(Volume_mm3))
+```
+
+
+-
+-----------------------------------
+Species | Average Limb Volume (mm³)  
+--------|--------------------------
+A. gestroi | 131.75
+A. klugii | 126.46
+P. laevis | 108.63
+P. scaber | 118.69
+T. biocellata | 120.25
+
+
+**Number of Species Observed by Observer**
+
+
+```{r}
+spec_by_obs <- dat_sort %>%
+  group_by(Species, Observer) %>%
+  summarise(Count = n(), .groups = "drop")
+```
+
+
+---------------------------------------
+Species | Observer | Count
+--------|----------|-------------------
+A. gestroi |	McTaggart |	2		
+A. gestroi |	Socrates |	6		
+A. gestroi |	Zeno |	11		
+A. klugii |	McTaggart |	9		
+A. klugii |	Socrates |	4		
+A. klugii |	Zeno |	8		
+P. laevis |	McTaggart |	7		
+P. laevis |	Socrates |	6		
+P. laevis |	Zeno |	2		
+P. scaber |	McTaggart |	9	
+P. scaber |	Socrates |	9		
+P. scaber |	Zeno |	4		
+T. biocellata |	McTaggart |	5		
+T. biocellata |	Socrates |	10		
+T. biocellata |	Zeno |	8	
+
+
+**Box Plot of Volume by Species**
+
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+ggplot(dat_sort, aes(x = Species, y = Volume_mm3)) +
+  geom_boxplot() +
+  labs(
+    title = "Distribution of Limb Volume by Species", 
+    x = "Species",  
+    y = "Limb Volume (mm³)") +
+  theme_minimal()
+```
+
+
+*Fig. 1: Box plot showing the distribution of limb volume (in mm³) by species.The box represents the interquartile range (IQR), with median values for each species indicated by the centre line in each box.The whiskers extend to 1.5x the IQR from the lower and upper quartiles; Any data points beyond the whiskers are considered outliers. Species are on the x-axis, while limb volumes (mm³) are plotted along the y-axis.*
+
+
+**Frequency Histograms of Limb Volume Distribution by Species**
+
+
+```{r}
+library(tidyr)
+```
+
+
+```{r}
+ggplot(dat_sort, aes(x = Volume_mm3)) +
+  geom_histogram(bins = 20, fill = "gray", color = "black") +
+  facet_wrap(~ Species) +  
+  labs(
+    title = "Distribution of Limb Volumes by Species",
+    x = "Limb Volume (mm³)",  # Units in the x-axis label
+    y = "Frequency") +
+  theme_minimal()
+```
+
+
+*Fig. 2: Multi-panel histogram showing the frequency distribution of limb volumes (in mm³) by species. Each panel represents one species, with the x-axis displaying the distribution of limb volume values and the y-axis displaying the frequency of which specific limb volumes were observed. The plots provide insight into the distribution and frequency of limb volumes between the different species.*
+
